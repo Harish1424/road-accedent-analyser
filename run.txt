@@ -1,0 +1,79 @@
+pip install -r requirements.txt == to run in other lap
+streamlit run app.py == only fro run
+
+
+🚗 Road Accident Analysis & Predictive Risk System
+The Road Accident Analysis & Predictive Risk System is an end-to-end Python Data Science and Web Application built with Streamlit, Scikit-Learn, Folium, Plotly, and SQLite.
+
+It helps traffic authorities, emergency responders, and urban planners monitor road accident logs, identify high-risk geospatial hotspots, predict accident risk levels under varying weather/road conditions, and deploy targeted safety interventions.
+
+🏗️ Project Architecture (Multi-Tier Structure)
+The project is structured into three decoupled layers:
+
+text
+road accedent analyser/
+├── database/
+│   ├── db_manager.py           # SQLite database engine (table creation, persistent logging, SQL queries)
+│   └── accident_data.db        # SQLite database storing accident records
+├── backend/
+│   ├── dummy_generator.py      # Generates synthetic accident dataset on first launch
+│   ├── data_processing.py      # Calculates composite severity scores
+│   ├── clustering.py           # K-Means geospatial hazard clustering algorithm
+│   ├── predictor.py            # Supervised Random Forest Classifier ML model
+│   └── recommendation.py       # Rule-based resource allocation & safety intervention engine
+├── frontend/
+│   ├── styles.py               # Dark-mode CSS design system & risk badge styles
+│   ├── sidebar.py              # CSV log uploader & manual record input controls
+│   ├── kpi_metrics.py          # Top header KPI summary cards
+│   ├── place_registry.py       # Monitored location registry, search bar & risk alerts
+│   ├── add_place_view.py       # Form for logging new accident records
+│   ├── map_view.py             # Geospatial Folium & Plotly map visualization
+│   ├── prediction_view.py     # Scenario risk predictor & recommendation engine
+│   └── analytics_view.py      # Plotly analytical dashboards & trend charts
+├── app.py                      # Main Streamlit application entry point
+└── requirements.txt            # Project dependencies list
+🧠 Data Science & Machine Learning Pipeline
+1. Composite Severity Scoring
+Each incident record is assigned a quantitative severity metric based on human impact and monetary damages:
+
+$$\text{Severity Score} = (\text{Fatalities} \times 10) + (\text{Injuries} \times 4) + \left(\frac{\text{Material_Loss_Cost}}{10000}\right)$$
+
+2. Geospatial Risk Clustering (Unsupervised K-Means)
+Features: Latitude, Longitude, Severity_Score
+Algorithm: KMeans(n_clusters=3) weighted by severity score.
+Risk Categorization: Clusters are mapped to human-readable risk levels by sorting cluster mean severity scores:
+Low Risk (🟢): Lowest mean severity cluster
+Medium Risk (🟡): Moderate mean severity cluster
+High Risk (🔴): Highest mean severity cluster
+3. Predictive Modeling (Supervised Random Forest Classifier)
+Features: Hour_of_Day (0–23), Day_of_Week, Road_Type, Weather_Condition
+Target: Risk_Level (High, Medium, Low)
+Pipeline: One-Hot Encoding for categorical variables + Random Forest Classifier (100 estimators).
+Function: Predicts risk likelihood for any custom scenario inputs.
+4. Actionable Recommendation Engine
+Based on the predicted risk level and environmental factors, the engine automatically outputs targeted interventions:
+
+High Risk (🔴): Dispatch highway patrol units, setup radar speed traps, position ambulances at 5km radii, activate signal priority overrides.
+Medium Risk (🟡): Increase stationary police presence, activate variable message signs, check street lighting.
+Low Risk (🟢): Maintain baseline CCTV surveillance and standard patrol shifts.
+Weather Advisories: Wet pavement speed reductions (Rain/Storm), high-intensity fog beacons (Fog), ramp metering (Expressways).
+🖥️ Core Dashboard Features
+📍 Registered Places & Risk Status:
+
+Monitored locations table displaying Risk Level badges, Severity Scores, Fatalities, Injuries, and Loss Costs.
+Live search bar to filter locations by name or risk level.
+High-Risk Hotspots Alert banner highlighting places requiring urgent attention.
+➕ Add New Location Record:
+
+Form to log new accident entries (Date, Time, Location_Name, Latitude, Longitude, Injuries, Fatalities, Loss Cost, Road Type, Weather).
+Automatically saves entries to SQLite DB and dynamically re-clusters risk levels across all places.
+🤖 Risk Level Predictor:
+
+Scenario input sliders & dropdowns to evaluate risk levels for custom times, days, road types, and weather.
+Displays model prediction probabilities and recommended action plans.
+🗺️ Geospatial Map View:
+
+Dual map engine: Folium Interactive Map (with density heatmaps and colored circle markers) and Plotly Geospatial Map.
+📊 Analytics & Trends:
+
+Plotly analytical charts: Hourly accident frequency (24-hour cycle), cumulative severity trends over time, injuries vs fatalities by location, and weather condition breakdown.

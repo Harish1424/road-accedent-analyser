@@ -62,7 +62,7 @@ with tab2:
     render_add_place_view()
 
 with tab3:
-    render_prediction_view(rf_model)
+    render_prediction_view(rf_model, df)
 
 with tab4:
     render_map_view(df)
